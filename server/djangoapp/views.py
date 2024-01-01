@@ -61,7 +61,7 @@ def logout_request(request):
 def registration_request(request):
     context = {}
     if request.method == 'GET':
-        return render(request, 'onlinecourse/user_registration.html', context)
+        return render(request, 'djangoapp/registration.html', context)
     elif request.method == 'POST':
         # Check if user exists
         username = request.POST['username']
@@ -71,7 +71,8 @@ def registration_request(request):
         last_name = request.POST['lastname']
 
         if password != confirm_password:
-            context['message'] = "Password don't match."
+            context['borderColor'] = "border border-danger"
+            context['pwdDontMatch'] = "Passwords don't match"
             return render(request, 'djangoapp/registration.html', context)
         user_exist = False
         try:

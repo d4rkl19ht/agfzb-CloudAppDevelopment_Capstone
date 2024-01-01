@@ -10,25 +10,27 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="firstname">Firstname</label>
-                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Firstname">
+                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Firstname" required>
                 </div>
                 <div class="form-group">
                     <label for="lastname">Lastname</label>
-                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname">
+                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname" required>
                 </div>
-                <br/><hr/><br/>
+                <hr/>
                 <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
                 </div>
                 <div class="form-group">
-                <label for="psw">Password</label>
-                <input type="password" class="form-control" id="psw" name="psw" placeholder="Enter password">
+                    <label for="psw">Password</label><label class="float-right text-danger font-italic">{{pwdDontMatch}}</label>
+                    <input type="password" class="form-control {{borderColor}}" id="psw" name="psw" placeholder="Enter password" required>
                 </div>
-                <label for="confirmpassword">Retype Password</label>
-                <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Retype password">
+                <div>
+                    <label for="confirmpassword">Retype Password</label><label class="float-right text-danger font-italic">{{pwdDontMatch}}</label>
+                    <input type="password" class="form-control {{borderColor}}" id="confirmpassword" name="confirmpassword" placeholder="Retype password" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+
+                <button type="submit" class="btn btn-primary mt-4">Sign Up</button>
             </form>
         </div>
         <div class="col-lg-3 col-sm-1"></div>
