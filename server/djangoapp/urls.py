@@ -9,9 +9,9 @@ urlpatterns = [
     # view refers to the view function
     # name the URL
     # path for about view
-    path(route='get_about/', view=views.get_about, name='get_about'),
+    path(route='about/', view=views.get_about, name='get_about'),
     # path for contact us view
-
+    path(route='contact/', view=views.get_contact, name='get_contact'),
     # path for registration
 
     # path for login
