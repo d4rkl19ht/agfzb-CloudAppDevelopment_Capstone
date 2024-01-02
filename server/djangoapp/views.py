@@ -69,10 +69,16 @@ def registration_request(request):
         confirm_password = request.POST['confirmpassword']
         first_name = request.POST['firstname']
         last_name = request.POST['lastname']
-
+        
         if password != confirm_password:
+            context['username'] = username
+            context['first_name'] = first_name
+            context['last_name'] = last_name
+            context['password'] = password
+            context['confirmpassword'] = confirm_password
             context['borderColor'] = "border border-danger"
             context['pwdDontMatch'] = "Passwords don't match"
+            context['pwd_autofocus'] = "autofocus"
             return render(request, 'djangoapp/registration.html', context)
         user_exist = False
         try:
