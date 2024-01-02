@@ -98,20 +98,32 @@ def registration_request(request):
             return render(request, 'djangoapp/registration.html', context)
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
-def get_dealerships(request,state=""):
+def get_dealerships(request,state="",id=""):
     context = {}
+    ftr=""
     if request.method == "GET":
         http = urllib3.PoolManager()
-        url = "https://olivernadela-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+        if state:
+            ftr = f"?state={state}"
+        elif id:
+            ftr = f"?id={id}"
+        
+
+        url = f"https://olivernadela-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get{ftr}"
         jresponse = http.request("GET", url)
         context['data'] = jresponse.json
         return render(request, 'djangoapp/index.html', context)
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
-# def get_dealer_details(request, dealer_id):
-# ...
-
+def get_dealer_details(request, dealer_id):
+    context = {}
+    if request.method == "GET":
+        http = urllib3.PoolManager()
+        url = f"https://olivernadela-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get?id={dealer_id}"
+        jresponse = http.request("GET", url)
+        context['data'] = jresponse.json
+        return render(request, 'djangoapp/dealer_details.html', context)
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 # ...
