@@ -9,6 +9,8 @@ from django.contrib import messages
 from datetime import datetime
 import logging
 import json
+import urllib3
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -96,9 +98,13 @@ def registration_request(request):
             return render(request, 'djangoapp/registration.html', context)
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
-def get_dealerships(request):
+def get_dealerships(request,state=""):
     context = {}
     if request.method == "GET":
+        http = urllib3.PoolManager()
+        url = "https://olivernadela-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+        jresponse = http.request("GET", url)
+        context['data'] = jresponse.json
         return render(request, 'djangoapp/index.html', context)
 
 
