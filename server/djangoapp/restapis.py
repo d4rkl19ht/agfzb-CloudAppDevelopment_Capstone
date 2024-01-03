@@ -28,6 +28,22 @@ def get_dealer_by_id_from_cf(dealerId):# - Call get_request() with specified arg
     response = requests.get(f"https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews?id={dealerId}")
     return response.json
 
+def dealership_add_review(request,review):
+    context = {}
+    # review = {
+    #     "id": 1114,
+    #     "name": "Upkar Lidder",
+    #     "dealership": 15,
+    #     "review": "Great service!",
+    #     "purchase": False,
+    #     "purchase_date": "02/16/2021",
+    #     "car_make": "Audi",
+    #     "car_model": "Car",
+    #     "car_year": 2021
+    # }
+    url = "https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
+    response = requests.post(url, json=review)
+    return response
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 # def analyze_review_sentiments(text):

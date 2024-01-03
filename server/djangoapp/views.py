@@ -3,13 +3,12 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
-from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf
+from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf, dealership_add_review
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
 import logging
 import json
-import urllib3
 
 
 # Get an instance of a logger
@@ -121,5 +120,31 @@ def get_dealer_details(request, dealer_id):
     #     context['data'] = jresponse.json
     #     return render(request, 'djangoapp/dealer_details.html', context)
 # Create a `add_review` view to submit a review
-def add_review(request, dealer_id):
-    
+def add_review(request):
+    context = {}
+    # review = {
+    #     "id": request.POST['id'],
+    #     "name": request.POST['name'],
+    #     "dealership": request.POST['dealership'],
+    #     "review": request.POST['review'],
+    #     "purchase": request.POST['purchase'],
+    #     "purchase_date": request.POST['purchase_date'],
+    #     "car_make": request.POST['car_make'],
+    #     "car_model": request.POST['car_model'],
+    #     "car_year": request.POST['car_year']
+    # }
+
+    review = {
+        "id": 1114,
+        "name": "Upkar Lidder",
+        "dealership": 15,
+        "review": "Great service!",
+        "purchase": False,
+        "purchase_date": "02/16/2021",
+        "car_make": "Audi",
+        "car_model": "Car",
+        "car_year": 2021
+    }
+    resp = dealership_add_review(request, review)
+    context['data'] = resp
+    return render(request, 'djangoapp/dealer_details.html', context) 
