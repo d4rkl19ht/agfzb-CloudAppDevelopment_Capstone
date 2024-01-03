@@ -14,15 +14,19 @@ from requests.auth import HTTPBasicAuth
 
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
-# def get_dealers_from_cf(url, **kwargs):
+def get_dealers_from_cf(param):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a CarDealer object list
+    response = requests.get(f"https://olivernadela-3000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get?{param}")
+    return response.json
+
 
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
-# def get_dealer_by_id_from_cf(url, dealerId):
-# - Call get_request() with specified arguments
+def get_dealer_by_id_from_cf(dealerId):# - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
+    response = requests.get(f"https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews?id={dealerId}")
+    return response.json
 
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text

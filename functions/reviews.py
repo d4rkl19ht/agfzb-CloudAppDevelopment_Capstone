@@ -70,3 +70,7 @@ def post_review():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# run to run server:
+# bash ./setup.sh 
+# python3.9 reviews.py

@@ -61,3 +61,12 @@ app.get('/dealerships/get', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+// run these commands to run the backend service:
+/*
+npm init -y
+npm install -s @cloudant/cloudant 
+npm install express 
+
+node get-dealership.js
+*/
