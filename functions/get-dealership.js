@@ -64,9 +64,5 @@ app.listen(port, () => {
 
 // run these commands to run the backend service:
 /*
-npm init -y
-npm install -s @cloudant/cloudant 
-npm install express 
-
-node get-dealership.js
+Hands-on Lab: Implement IBM Cloud Function Endpoints
 */
