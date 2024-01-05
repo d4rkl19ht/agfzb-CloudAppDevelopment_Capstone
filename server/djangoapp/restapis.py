@@ -47,19 +47,19 @@ def get_dealers_from_cf(url, **kwargs):
             results.append(dealer_obj)
 
     return results
-# def get_dealers_from_cf(param):
-# # - Call get_request() with specified arguments
-# # - Parse JSON results into a CarDealer object list
-#     response = requests.get(f"https://olivernadela-3000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get?{param}")
-#     return response.json
 
 
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
-def get_dealer_by_id_from_cf(dealerId):# - Call get_request() with specified arguments
-# - Parse JSON results into a DealerView object list
-    response = requests.get(f"https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews?id={dealerId}")
-    return response.json
+def get_dealer_by_id_from_cf(url, dealerID):
+    # - Call get_request() with specified arguments
+    # - Parse JSON results into a DealerView object list
+    return get_dealers_from_cf(f"{url}?id={dealerID}")
+
+def get_dealer_by_state_from_cf(url, state):
+    # - Call get_request() with specified arguments
+    # - Parse JSON results into a DealerView object list
+    return get_dealers_from_cf(f"{url}?state={state}")
 
 def dealership_add_review(request,review):
     context = {}
