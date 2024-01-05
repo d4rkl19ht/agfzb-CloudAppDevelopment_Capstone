@@ -99,9 +99,15 @@ def registration_request(request):
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request, state="", id=""):
     if request.method == "GET":
-        url = "https://olivernadela-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+        param=""
+        if state:
+            param = f"?state={state}"
+        elif id:
+            param = f"?id={id}"
+
+        url = f"https://olivernadela-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get{param}"
         # Get dealers from the URL
-        dealerships = get_dealers_from_cf(url, state, id)
+        dealerships = get_dealers_from_cf(url)
         # Concat all dealer's short name
         dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
