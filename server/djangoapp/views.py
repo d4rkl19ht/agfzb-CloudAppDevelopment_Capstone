@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
-from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf, dealership_add_review, get_dealer_by_state_from_cf
+from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf, dealership_add_review, get_dealer_by_state_from_cf, get_dealer_reviews_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -114,21 +114,15 @@ def get_dealerships(request, state="", id=""):
         return HttpResponse(dealer_names)
 
 
-get_dealer_by_id_from_cf
-
-
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):
-    context = {}
-    context['data'] = get_dealer_by_id_from_cf(dealer_id)
-    return render(request, 'djangoapp/dealer_details.html', context)
-    # if request.method == "GET":
-    #     http = urllib3.PoolManager()
-    #     url = f"https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews?id={dealer_id}"
-    #     jresponse = http.request("GET", url)
-    #     context['data'] = jresponse.json
-    #     return render(request, 'djangoapp/dealer_details.html', context)
-# Create a `add_review` view to submit a review
+    url = "https://olivernadela-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/"
+    dealer_reviews = get_dealer_reviews_from_cf(url, dealer_id)
+    # Concat all dealer's short name
+    dealer_reviews = ' '.join([review.review for review in dealer_reviews])
+        # Return a list of dealer short name
+    return HttpResponse(dealer_reviews)
+    
 def add_review(request):
     context = {}
     # review = {

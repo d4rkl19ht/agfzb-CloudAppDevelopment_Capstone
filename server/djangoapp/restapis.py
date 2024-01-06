@@ -1,6 +1,6 @@
 import requests
 import json
-from .models import CarDealer
+from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
 
 
@@ -24,6 +24,7 @@ def get_request(url, **kwargs):
 
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
+
 
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
@@ -59,24 +60,24 @@ def get_dealer_by_state_from_cf(url, state):
     # - Parse JSON results into a DealerView object list
     return get_dealers_from_cf(f"{url}?state={state}")
 
+def filter_keys(pair):
+    return True
+    # key,val = pair
+    # unwanted_keys = ['_id','_rev','another']
+    # return False if key in unwanted_keys else True
+
 def get_dealer_reviews_from_cf(url, id):
     results = []
-    json_result = get_request(url, dealerId=dealer_id)
+    json_result = get_request(f"{url}api/get_reviews?id={id}")
     if json_result:
         # Get the row list in JSON as dealers
         reviews = json_result
         # For each dealer object
         for review in reviews:
-            # Get its content in `doc` object
-            review_doc = review
-            # Create a CarDealer object with values in `doc` object
-            review_obj = DealerReview(address=review_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
-                                   id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
-                                   short_name=dealer_doc["short_name"],
-                                   st=dealer_doc["st"], zip=dealer_doc["zip"])
-            results.append(review_obj)
-
-    return results
+            newflds = filter(lambda key: key not in ['_id','_rev','another'],review.keys())
+            newflds = dict((d,review[d]) for d in newflds)
+            results.append(DealerReview(**newflds))
+    return (results)
 
 def dealership_add_review(request,review):
     context = {}
