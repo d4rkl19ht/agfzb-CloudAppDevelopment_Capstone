@@ -64,7 +64,6 @@ def registration_request(request):
     if request.method == 'GET':
         return render(request, 'djangoapp/registration.html', context)
     elif request.method == 'POST':
-        # Check if user exists
         username = request.POST['username']
         password = request.POST['psw']
         confirm_password = request.POST['confirmpassword']
@@ -81,6 +80,7 @@ def registration_request(request):
             context['pwdDontMatch'] = "Passwords don't match"
             context['pwd_autofocus'] = "autofocus"
             return render(request, 'djangoapp/registration.html', context)
+        # Check if user exists
         user_exist = False
         try:
             User.objects.get(username=username)
@@ -123,7 +123,7 @@ def get_dealer_details(request, dealer_id):
         # Return a list of dealer short name
     return HttpResponse(dealer_reviews)
     
-def add_review(request):
+def add_review(request, dealer_id):
     context = {}
     # review = {
     #     "id": request.POST['id'],
@@ -148,6 +148,12 @@ def add_review(request):
         "car_model": "Car",
         "car_year": 2021
     }
+
+    review_object = DealerReview
+    objflds = review_object.key
+    newflds = filter(lambda key: key in objflds,request.POST.keys())
+    newflds = dict((d,request.POST[d]) for d in newflds)
+    review_obj = DealerReview(**newflds)
     resp = dealership_add_review(request, review)
     context['data'] = resp
     return render(request, 'djangoapp/dealer_details.html', context) 
