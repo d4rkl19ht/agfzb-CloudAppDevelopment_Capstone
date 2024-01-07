@@ -98,16 +98,15 @@ def registration_request(request):
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request, state="", id=""):
-    url = "https://olivernadela-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
-
+    
     if request.method == "GET":
         # Get dealers from the URL
         if state:
-            dealerships = get_dealer_by_state_from_cf(url,state)
+            dealerships = get_dealer_by_state_from_cf(state)
         elif id:
-            dealerships = get_dealer_by_id_from_cf(url, id)
+            dealerships = get_dealer_by_id_from_cf(id)
         else:
-            dealerships = get_dealers_from_cf(url)
+            dealerships = get_dealers_from_cf()
         # Concat all dealer's short name
         dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
@@ -125,8 +124,6 @@ def get_dealer_details(request, dealer_id):
 
 
 def add_review(request, dealer_id):
-        context = {}
-
         review = {
             "id": 1114,
             "name": "Upkar Lidder 16",
@@ -142,27 +139,6 @@ def add_review(request, dealer_id):
         json_payload['review'] = review
 
         resp = dealership_add_review(request, json_payload)
-        context['data'] = resp
         # return render(request, 'djangoapp/dealer_details.html', context) 
         return HttpResponse(resp)
     
-# def add_review(request, dealer_id):
-#     context = {}
-#     # review = {
-#     #     "id": request.POST['id'],
-#     #     "name": request.POST['name'],
-#     #     "dealership": request.POST['dealership'],
-#     #     "review": request.POST['review'],
-#     #     "purchase": request.POST['purchase'],
-#     #     "purchase_date": request.POST['purchase_date'],
-#     #     "car_make": request.POST['car_make'],
-#     #     "car_model": request.POST['car_model'],
-#     #     "car_year": request.POST['car_year']
-#     # }
-
-
-    
-#     resp = dealership_add_review(request)
-#     context['data'] = resp
-#     # return render(request, 'djangoapp/dealer_details.html', context) 
-#     return HttpResponse(context.data)

@@ -27,13 +27,14 @@ def get_request(url, **kwargs):
 
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
-def post_request(url, json_payload, **kwargs):
+def post_request(url, json_payload):
     try:
         # Call get method of requests library with URL and parameters
-        response = requests.post(url, params=kwargs, json=json_payload)
+        response = requests.post(url, json=json_payload, auth=HTTPBasicAuth('apikey', 'uxIts40B9NC9zz_J10ZOTtOpUJOcCXoCr1Rxk5apWqT0'))
     except:
         # If any error occurs
         print("Network exception occurred")
+        response = 'error encountered in restapis.py'
     return response
     status_code = response.status_code
     print(f"With status {status_code}")
@@ -41,9 +42,9 @@ def post_request(url, json_payload, **kwargs):
     return json_data
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
-def get_dealers_from_cf(url, **kwargs):
+def get_dealers_from_cf(**kwargs):
     results = []
-
+    url = "https://olivernadela-3000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
     # Call get_request with a URL parameter
     json_result = get_request(url)
     if json_result:
@@ -81,7 +82,7 @@ def filter_keys(pair):
 
 def get_dealer_reviews_from_cf(id):
     results = []
-    url = "https://olivernadela-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/"
+    url = "https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/"
     json_result = get_request(f"{url}api/get_reviews?id={id}")
     if json_result:
         # Get the row list in JSON as reviews
@@ -104,7 +105,7 @@ def dealership_add_review(request, json_payload):
     # print(f"json payload: {json_payload}")
     url = "https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
     # response = post_request(url, json_payload)
-    response = requests.post(url, json=json_payload)
+    response = post_request(url, json_payload)
     return response
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
