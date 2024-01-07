@@ -121,12 +121,14 @@ def get_dealer_details(request, dealer_id):
         dealer_reviews = ' '.join([f"{review.review} [{review.sentiment}]" for review in dealer_reviews])
             # Return a list of dealer short name
         return HttpResponse(dealer_reviews)
+    elif request.method == 'POST':
+        add_review(request, dealer_id)
 
 
 def add_review(request, dealer_id):
         review = {
             "id": 1114,
-            "name": "Upkar Lidder 16",
+            "name": "Upkar Lidder 17",
             "dealership": dealer_id,
             "review": "Great service!",
             "purchase": False,

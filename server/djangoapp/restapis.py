@@ -42,9 +42,13 @@ def post_request(url, json_payload):
     return json_data
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
-def get_dealers_from_cf(**kwargs):
+def get_dealers_from_cf(param=""):
     results = []
-    url = "https://olivernadela-3000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+    url = "https://olivernadela-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai"
+    url = f"{url}/dealerships/get"
+    if param:
+        url = f"{url}/{param}"
+
     # Call get_request with a URL parameter
     json_result = get_request(url)
     if json_result:
@@ -60,19 +64,20 @@ def get_dealers_from_cf(**kwargs):
                                    short_name=dealer_doc["short_name"],
                                    st=dealer_doc["st"], zip=dealer_doc["zip"])
             results.append(dealer_obj)
-
     return results
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
-def get_dealer_by_id_from_cf(url, dealerID):
+def get_dealer_by_id_from_cf(dealerID):
     # - Call get_request() with specified arguments
     # - Parse JSON results into a DealerView object list
-    return get_dealers_from_cf(f"{url}?id={dealerID}")
+    param = f"?id={dealerID}"
+    return get_dealers_from_cf(param)
 
-def get_dealer_by_state_from_cf(url, state):
+def get_dealer_by_state_from_cf(state):
     # - Call get_request() with specified arguments
     # - Parse JSON results into a DealerView object list
-    return get_dealers_from_cf(f"{url}?state={state}")
+    param = f"?state={state}"
+    return get_dealers_from_cf(param)
 
 def filter_keys(pair):
     return True
@@ -82,7 +87,7 @@ def filter_keys(pair):
 
 def get_dealer_reviews_from_cf(id):
     results = []
-    url = "https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/"
+    url = "https://olivernadela-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/"
     json_result = get_request(f"{url}api/get_reviews?id={id}")
     if json_result:
         # Get the row list in JSON as reviews
@@ -103,7 +108,7 @@ def dealership_add_review(request, json_payload):
     # dataflds = dict((d,request.POST[d]) for d in objflds)
     # json_payload = dataflds
     # print(f"json payload: {json_payload}")
-    url = "https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
+    url = "https://olivernadela-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
     # response = post_request(url, json_payload)
     response = post_request(url, json_payload)
     return response
