@@ -34,11 +34,11 @@ def post_request(url, json_payload, **kwargs):
     except:
         # If any error occurs
         print("Network exception occurred")
+    return response
     status_code = response.status_code
     print(f"With status {status_code}")
     json_data = json.loads(response.text)
     return json_data
-
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
 def get_dealers_from_cf(url, **kwargs):
@@ -79,8 +79,9 @@ def filter_keys(pair):
     # unwanted_keys = ['_id','_rev','another']
     # return False if key in unwanted_keys else True
 
-def get_dealer_reviews_from_cf(url, id):
+def get_dealer_reviews_from_cf(id):
     results = []
+    url = "https://olivernadela-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/"
     json_result = get_request(f"{url}api/get_reviews?id={id}")
     if json_result:
         # Get the row list in JSON as reviews
@@ -96,21 +97,14 @@ def get_dealer_reviews_from_cf(url, id):
             results.append(review_obj)
     return (results)
 
-def dealership_add_review(request,review):
-    # review = {
-    #     "id": 1114,
-    #     "name": "Upkar Lidder",
-    #     "dealership": 15,
-    #     "review": "Great service!",
-    #     "purchase": False,
-    #     "purchase_date": "02/16/2021",
-    #     "car_make": "Audi",
-    #     "car_model": "Car",
-    #     "car_year": 2021
-    # }
-    json_payload = review
+def dealership_add_review(request, json_payload):
+    # objflds = ['id', 'name', 'dealership', 'review', 'car_make', 'car_model', 'car_year', 'purchase', 'purchase_date']
+    # dataflds = dict((d,request.POST[d]) for d in objflds)
+    # json_payload = dataflds
+    # print(f"json payload: {json_payload}")
     url = "https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
-    response = post_request(url, json_payload)
+    # response = post_request(url, json_payload)
+    response = requests.post(url, json=json_payload)
     return response
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text

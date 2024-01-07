@@ -116,44 +116,53 @@ def get_dealerships(request, state="", id=""):
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):
-    url = "https://olivernadela-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/"
-    dealer_reviews = get_dealer_reviews_from_cf(url, dealer_id)
-    # Concat all dealer's short name
-    dealer_reviews = ' '.join([f"{review.review} [{review.sentiment}]" for review in dealer_reviews])
-        # Return a list of dealer short name
-    return HttpResponse(dealer_reviews)
-    
+    if request.method == 'GET':
+        dealer_reviews = get_dealer_reviews_from_cf(dealer_id)
+        # Concat all dealer's short name
+        dealer_reviews = ' '.join([f"{review.review} [{review.sentiment}]" for review in dealer_reviews])
+            # Return a list of dealer short name
+        return HttpResponse(dealer_reviews)
+
+
 def add_review(request, dealer_id):
-    context = {}
-    # review = {
-    #     "id": request.POST['id'],
-    #     "name": request.POST['name'],
-    #     "dealership": request.POST['dealership'],
-    #     "review": request.POST['review'],
-    #     "purchase": request.POST['purchase'],
-    #     "purchase_date": request.POST['purchase_date'],
-    #     "car_make": request.POST['car_make'],
-    #     "car_model": request.POST['car_model'],
-    #     "car_year": request.POST['car_year']
-    # }
+        context = {}
 
-    review = {
-        "id": 1114,
-        "name": "Upkar Lidder",
-        "dealership": 15,
-        "review": "Great service!",
-        "purchase": False,
-        "purchase_date": "02/16/2021",
-        "car_make": "Audi",
-        "car_model": "Car",
-        "car_year": 2021
-    }
+        review = {
+            "id": 1114,
+            "name": "Upkar Lidder 16",
+            "dealership": dealer_id,
+            "review": "Great service!",
+            "purchase": False,
+            "purchase_date": "02/16/2021",
+            "car_make": "Audi",
+            "car_model": "Car",
+            "car_year": 2021
+        }
+        json_payload = {}
+        json_payload['review'] = review
 
-    review_object = DealerReview
-    objflds = review_object.key
-    newflds = filter(lambda key: key in objflds,request.POST.keys())
-    newflds = dict((d,request.POST[d]) for d in newflds)
-    review_obj = DealerReview(**newflds)
-    resp = dealership_add_review(request, review)
-    context['data'] = resp
-    return render(request, 'djangoapp/dealer_details.html', context) 
+        resp = dealership_add_review(request, json_payload)
+        context['data'] = resp
+        # return render(request, 'djangoapp/dealer_details.html', context) 
+        return HttpResponse(resp)
+    
+# def add_review(request, dealer_id):
+#     context = {}
+#     # review = {
+#     #     "id": request.POST['id'],
+#     #     "name": request.POST['name'],
+#     #     "dealership": request.POST['dealership'],
+#     #     "review": request.POST['review'],
+#     #     "purchase": request.POST['purchase'],
+#     #     "purchase_date": request.POST['purchase_date'],
+#     #     "car_make": request.POST['car_make'],
+#     #     "car_model": request.POST['car_model'],
+#     #     "car_year": request.POST['car_year']
+#     # }
+
+
+    
+#     resp = dealership_add_review(request)
+#     context['data'] = resp
+#     # return render(request, 'djangoapp/dealer_details.html', context) 
+#     return HttpResponse(context.data)
