@@ -51,6 +51,7 @@ def get_reviews():
 
 @app.route('/api/post_review', methods=['POST'])
 def post_review():
+    # return request.json
     if not request.json:
         abort(400, description='Invalid JSON data')
     

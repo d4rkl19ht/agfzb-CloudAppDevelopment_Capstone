@@ -138,7 +138,7 @@ def add_review(request, dealer_id):
         json_payload = {}
         json_payload['review'] = review
 
-        resp = dealership_add_review(request, json_payload)
+        resp = dealership_add_review(request, review)
         # return render(request, 'djangoapp/dealer_details.html', context) 
         return HttpResponse(resp)
     
