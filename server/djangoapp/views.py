@@ -131,21 +131,23 @@ def get_dealer_details(request, dealer_id):
 
 
 def add_review(request, dealer_id):
-        review = {
-            "id": 1114,
-            "name": "Upkar Lidder 17",
-            "dealership": dealer_id,
-            "review": "Great service!",
-            "purchase": False,
-            "purchase_date": "02/16/2021",
-            "car_make": "Audi",
-            "car_model": "Car",
-            "car_year": 2021
-        }
-        json_payload = {}
-        json_payload['review'] = review
+    context = {}
+    review = {
+        "id": 1114,
+        "name": "Upkar Lidder 17",
+        "dealership": dealer_id,
+        "review": "Great service!",
+        "purchase": False,
+        "purchase_date": "02/16/2021",
+        "car_make": "Audi",
+        "car_model": "Car",
+        "car_year": 2021
+    }
+    json_payload = {}
+    json_payload['review'] = review
 
-        resp = dealership_add_review(request, review)
-        # return render(request, 'djangoapp/dealer_details.html', context) 
-        return HttpResponse(resp)
+    resp = dealership_add_review(request, review)
+    context['data'] = resp
+    return render(request, 'djangoapp/add_review.html', context) 
+    # return HttpResponse(resp)
     
