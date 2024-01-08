@@ -44,7 +44,7 @@ def post_request(url, json_payload):
 # Create a get_dealers_from_cf method to get dealers from a cloud function
 def get_dealers_from_cf(param=""):
     results = []
-    url = "https://olivernadela-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai"
+    url = "https://olivernadela-3000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai"
     url = f"{url}/dealerships/get"
     if param:
         url = f"{url}/{param}"
@@ -66,7 +66,6 @@ def get_dealers_from_cf(param=""):
             results.append(dealer_obj)
     return results
 
-# Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 def get_dealer_by_id_from_cf(dealerID):
     # - Call get_request() with specified arguments
     # - Parse JSON results into a DealerView object list
@@ -85,10 +84,11 @@ def filter_keys(pair):
     # unwanted_keys = ['_id','_rev','another']
     # return False if key in unwanted_keys else True
 
+# Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 def get_dealer_reviews_from_cf(id):
     results = []
-    url = "https://olivernadela-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/"
-    json_result = get_request(f"{url}api/get_reviews?id={id}")
+    url = "https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai"
+    json_result = get_request(f"{url}/api/get_reviews?id={id}")
     if json_result:
         # Get the row list in JSON as reviews
         reviews = json_result

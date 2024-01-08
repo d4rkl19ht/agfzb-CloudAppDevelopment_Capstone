@@ -7,5 +7,35 @@
         of the
         <span class="text-danger font-weight-bold" style="font-size: 50px">BEST CARS!</span></h3>
 </div>
-{{data}}
+<div class="m-auto w-75">
+    <table id="table" data-toggle="table" data-search="true" data-filter-control="true">
+        <thead>
+        <tr>
+            <th data-sortable="true">ID</th>
+            <th data-sortable="true">Dealer Name</th>
+            <th data-sortable="true">City</th>
+            <th>Address</th>
+            <th data-sortable="true">Zip</th>
+            <th data-field="state" data-sortable="true" data-filter-control="select">State</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for dealer in dealership_list %}
+            <tr>
+                <td>{{dealer.id}}</td>
+                <td><a href="{%url 'djangoapp:dealer_details' dealer.id%}">{{dealer.full_name}}</a></td>
+                <td>{{dealer.city}}</td>
+                <td>{{dealer.address}}</td>
+                <td>{{dealer.zip}}</td>
+                <td>{{dealer.st}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    $(function() {
+      $('#table').bootstrapTable()
+    })
+</script>
 {%endblock content%}

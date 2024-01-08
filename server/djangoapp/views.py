@@ -98,7 +98,7 @@ def registration_request(request):
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request, state="", id=""):
-    
+    context = {}
     if request.method == "GET":
         # Get dealers from the URL
         if state:
@@ -108,19 +108,24 @@ def get_dealerships(request, state="", id=""):
         else:
             dealerships = get_dealers_from_cf()
         # Concat all dealer's short name
-        dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
+        # dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
-        return HttpResponse(dealer_names)
+        json_string = json.dumps([obj.__dict__ for obj in dealerships])
+        context['dealership_list'] = dealerships
+        return render(request, 'djangoapp/index.html', context)
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):
+    context = {}
     if request.method == 'GET':
         dealer_reviews = get_dealer_reviews_from_cf(dealer_id)
+        context['reviews'] = dealer_reviews
+        return render(request, 'djangoapp/dealer_details.html', context)
         # Concat all dealer's short name
-        dealer_reviews = ' '.join([f"{review.review} [{review.sentiment}]" for review in dealer_reviews])
-            # Return a list of dealer short name
-        return HttpResponse(dealer_reviews)
+        # dealer_reviews = ' '.join([f"{review.review} [{review.sentiment}]" for review in dealer_reviews])
+        # Return a list of dealer short name
+        # return HttpResponse(dealer_reviews)
     elif request.method == 'POST':
         add_review(request, dealer_id)
 

@@ -53,7 +53,6 @@ app.get('/dealerships/get', (req, res) => {
             res.status(500).json({ error: 'An error occurred while fetching dealerships.' });
         } else {
             const dealerships = body.docs;
-            console.log(dealerships);
             res.json(dealerships);
         }
     });
