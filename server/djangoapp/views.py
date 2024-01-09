@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-# from .models import related models
+from .models import *
 from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf, dealership_add_review, get_dealer_by_state_from_cf, get_dealer_reviews_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -131,6 +131,14 @@ def get_dealer_details(request, dealer_id):
 
 def add_review(request, dealer_id):
     context = {}
+    dealership_fullname = get_dealer_by_id_from_cf(dealer_id)
+    context['dealership_obj'] = dealership_fullname[0]
+    context['cars'] = CarModel.objects.all()
+    if request.method == 'GET':
+        pass
+    elif request.method == 'POST':
+        pass
+    return render(request, 'djangoapp/add_review.html', context) 
     # review = {
     #     "id": 1114,
     #     "name": "Upkar Lidder 17",
@@ -147,8 +155,6 @@ def add_review(request, dealer_id):
 
     # resp = dealership_add_review(request, review)
     # context['data'] = resp
-    dealership_fullname = get_dealer_by_id_from_cf(dealer_id)
-    context['dealership_obj'] = dealership_fullname[0]
-    return render(request, 'djangoapp/add_review.html', context) 
+    
     # return HttpResponse(resp)
     

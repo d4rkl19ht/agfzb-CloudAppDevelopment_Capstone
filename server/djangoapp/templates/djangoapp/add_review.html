@@ -13,15 +13,17 @@
                 Has purchased the car from supplier {{dealership_obj.full_name}}?
             </label>
         </div>
-        <select class="form-select form-select-lg mb-3" name="car" id="car" required>
-            <option selected>Click to select a car</option>
-            {%for car in cars%}
-                <option value={{car.id}}>{{car.name}}-{{car.make.name}}-{{car.year|date:"Y"}}</option>
-            {%endfor%}
-        </select>
-          
+        <div class="form-group d-inline">
+            <label for="car">Select your car (model-make-year):
+            <select class="form-select form-select-lg mb-3" name="car" id="car" required>
+                <option selected>Click to select a car</option>
+                {%for car in cars%}
+                    <option value={{car.id}}>{{car.name}}-{{car.car_make.name}}-{{car.year|date:"Y"}}</option>
+                {%endfor%}
+            </select>
+        </div>
 
-        <button class="btn btn-primary" type="submit">Sumbit Review</button>
+        <button class="btn btn-primary d-block" type="submit">Submit Review</button>
     </form>
 </div>
 {%endblock%}
