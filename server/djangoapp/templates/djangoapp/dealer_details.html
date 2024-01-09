@@ -1,21 +1,26 @@
 {%extends 'djangoapp/base.html'%}
 {%load static%}
 {%block addreview%}
-        <ul class="navbar-nav">
-            <li class="nav-item">
-            </li>
-        </ul>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'djangoapp:add_review' dealer_id=dealership_obj.id %}">Add Review</a>
+        </li>
+    </ul>
 {%endblock%}
 {%block content%}
-<div class="card-columns container p-2">
-    {%for review in reviews%}
-        <div class="card">
-            <img class="card-img-left m-2" height="50" width="50" src="{{MEDIA_URL}}/emoji/{{review.sentiment}}.png"/>
-            <div class="card-body bg-light">
-                <h4 class="card-title">{{review.car_make}}, {{review.car_model}}</h4>
-                <p class="card-text">{{review.review}}</p>
+<div class="container mt-2">
+    <h3>Reviews for {{dealership_obj.full_name}}</h3>
+    <div class="card-columns">
+        {%for review in reviews%}
+            <div class="card">
+                <img class="card-img-left m-2" height="50" width="50" src="{{MEDIA_URL}}/emoji/{{review.sentiment}}.png"/>
+                <div class="card-body bg-light">
+                    <h4 class="card-title">{{review.car_make}}, {{review.car_model}}</h4>
+                    <p class="card-text">{{review.car_year}}</p>
+                    <p class="card-text">{{review.review}}</p>
+                </div>
             </div>
-        </div>
-    {%endfor%}
+        {%endfor%}
+    </div>
 </div>
 {%endblock%}

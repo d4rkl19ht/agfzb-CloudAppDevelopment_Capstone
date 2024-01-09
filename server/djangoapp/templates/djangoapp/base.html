@@ -31,6 +31,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/djangoapp/contact">Contact Us</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/djangoapp/contact">Contact Us</a>
+                </li>
             </ul>
             {% if user.is_authenticated %}
             {%block addreview%}
@@ -38,7 +41,7 @@
             <ul class="navbar-nav ml-auto mr-5">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="font-italic">[{{ user.first_name}}]</span> {{ user.username}}
+                        <span class="font-italic">[ {{ user.first_name}} ]</span> {{ user.username}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/djangoapp/logout">Sign Out</a>
