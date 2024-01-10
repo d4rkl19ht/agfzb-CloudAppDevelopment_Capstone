@@ -1,7 +1,9 @@
 {%extends 'djangoapp/base.html'%}
 {%load static%}
+
 {%block content%}
 <div class="container">
+    <h1>Add a review about {{dealership_obj.full_name}}</h1>
     <form action="#" method="post">
         <div class="form-group">
             <label for="content">Enter the review content:</label>
@@ -22,8 +24,17 @@
                 {%endfor%}
             </select>
         </div>
-
+        <div class="form-group mt-5">
+            <label for="purchasedate">Select Your Purchase Date:</label>
+            <input class="date-own form-control w-25" type="text" name="purchasedate" id="purchasedate">
+        </div>
         <button class="btn btn-primary d-block" type="submit">Submit Review</button>
     </form>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+    $('.date-own').datepicker({
+       format: 'mm/dd/yyyy'
+     });
+</script>
 {%endblock%}
