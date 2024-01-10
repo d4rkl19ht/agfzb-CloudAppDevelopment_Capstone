@@ -121,9 +121,9 @@ def get_dealer_details(request, dealer_id):
     if request.method == 'GET':
         dealer_reviews = get_dealer_reviews_from_cf(dealer_id)
         context['reviews'] = dealer_reviews
-        dealership_fullname = get_dealer_by_id_from_cf(dealer_id)
-        context['dealership_obj'] = dealership_fullname[0]
-        return render(request, 'djangoapp/dealer_details.html', context)
+        dealership_obj = get_dealer_by_id_from_cf(dealer_id)
+        context['dealership_obj'] = dealership_obj[0]
+    return render(request, 'djangoapp/dealer_details.html', context)
         # Concat all dealer's short name
         # dealer_reviews = ' '.join([f"{review.review} [{review.sentiment}]" for review in dealer_reviews])
         # Return a list of dealer short name
@@ -131,30 +131,15 @@ def get_dealer_details(request, dealer_id):
 
 def add_review(request, dealer_id):
     context = {}
-    dealership_fullname = get_dealer_by_id_from_cf(dealer_id)
-    context['dealership_obj'] = dealership_fullname[0]
-    context['cars'] = CarModel.objects.all()
-    if request.method == 'GET':
-        pass
+    if request.method == "GET":
+        dealership_obj = get_dealer_by_id_from_cf(dealer_id)
+        context['dealership_obj'] = dealership_obj[0]
+        context['cars'] = CarModel.objects.all()
+        return render(request, 'djangoapp/add_review.html', context) 
+        return HttpResponse('hello get')
     elif request.method == 'POST':
-        pass
-    return render(request, 'djangoapp/add_review.html', context) 
-    # review = {
-    #     "id": 1114,
-    #     "name": "Upkar Lidder 17",
-    #     "dealership": dealer_id,
-    #     "review": "Great service!",
-    #     "purchase": False,
-    #     "purchase_date": "02/16/2021",
-    #     "car_make": "Audi",
-    #     "car_model": "Car",
-    #     "car_year": 2021
-    # }
-    # json_payload = {}
-    # json_payload['review'] = review
-
-    # resp = dealership_add_review(request, review)
-    # context['data'] = resp
+        resp = dealership_add_review(request, dealer_id)
+        return HttpResponse(resp)
     
-    # return HttpResponse(resp)
+
     

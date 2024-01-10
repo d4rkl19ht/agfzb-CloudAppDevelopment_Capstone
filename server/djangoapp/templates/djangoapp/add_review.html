@@ -3,8 +3,9 @@
 
 {%block content%}
 <div class="container">
-    <h1>Add a review about {{dealership_obj.full_name}}</h1>
-    <form action="#" method="post">
+    <h3>Add a review about {{dealership_obj.full_name}}</h3>
+    <form action="{%url 'djangoapp:add_review' dealer_id=dealership_obj.id%}" method="post">
+        {% csrf_token %}        
         <div class="form-group">
             <label for="content">Enter the review content:</label>
             <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
@@ -26,7 +27,7 @@
         </div>
         <div class="form-group mt-5">
             <label for="purchasedate">Select Your Purchase Date:</label>
-            <input class="date-own form-control w-25" type="text" name="purchasedate" id="purchasedate">
+            <input class="date-own form-control w-25" type="text" name="purchasedate" id="purchasedate" placeholder="mm/dd/yyyy">
         </div>
         <button class="btn btn-primary d-block" type="submit">Submit Review</button>
     </form>

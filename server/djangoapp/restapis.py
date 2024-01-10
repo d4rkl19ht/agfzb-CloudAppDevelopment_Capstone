@@ -1,6 +1,6 @@
 import requests
 import json
-from .models import CarDealer, DealerReview
+from .models import *
 from requests.auth import HTTPBasicAuth
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
@@ -103,15 +103,31 @@ def get_dealer_reviews_from_cf(id):
             results.append(review_obj)
     return (results)
 
-def dealership_add_review(request, json_payload):
-    # objflds = ['id', 'name', 'dealership', 'review', 'car_make', 'car_model', 'car_year', 'purchase', 'purchase_date']
-    # dataflds = dict((d,request.POST[d]) for d in objflds)
-    # json_payload = dataflds
-    # print(f"json payload: {json_payload}")
+def dealership_add_review(request, dealer_id):
+    id = request.user.id
+    name = request.user.get_full_name()
+    dealership = dealer_id
+    review = request.POST['content']
+    car = CarModel.objects.get(id=request.POST['car'])
+    car_make = car.car_make.name
+    car_model = car.name
+    car_year = car.year
+    purchase = request.POST["purchasecheck"]
+    purchase_date = request.POST["purchasedate"]
+    dealer_review_obj = {
+        'id':id, 
+        'name':name, 
+        'dealership':dealership, 
+        'review':review, 
+        'car_make':car_make, 
+        'car_model':car_model, 
+        'car_year':car_year, 
+        'purchase':purchase, 
+        'purchase_date':purchase_date}
+    json_payload = json.loads(list(dealer_review_obj))
     url = "https://olivernadela-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
     # response = post_request(url, json_payload)
-    response = post_request(url, json_payload)
-    return response
+    return dealer_review_obj
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 def analyze_review_sentiments(text):
