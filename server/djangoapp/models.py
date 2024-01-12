@@ -40,7 +40,7 @@ class CarModel(models.Model):
         (WAGON, 'Wagon')
     ]
     car_type = models.CharField(null=False, max_length=10, choices = CAR_TYPES, default=SEDAN)
-    year = models.DateField()
+    year = models.CharField(max_length=10)
 
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
 class CarDealer:

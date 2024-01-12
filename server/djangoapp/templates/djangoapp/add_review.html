@@ -21,7 +21,7 @@
             <select class="form-select form-select-lg mb-3" name="car" id="car" required>
                 <option selected>Click to select a car</option>
                 {%for car in cars%}
-                    <option value={{car.id}}>{{car.name}}-{{car.car_make.name}}-{{car.year|date:"Y"}}</option>
+                    <option value={{car.id}}>{{car.name}}-{{car.car_make.name}}-{{car.year}}</option>
                 {%endfor%}
             </select>
         </div>

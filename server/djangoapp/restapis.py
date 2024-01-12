@@ -28,18 +28,17 @@ def get_request(url, **kwargs):
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
 def post_request(url, json_payload):
-    try:
+    
+    # try:
         # Call get method of requests library with URL and parameters
-        response = requests.post(url, json=json_payload, auth=HTTPBasicAuth('apikey', 'uxIts40B9NC9zz_J10ZOTtOpUJOcCXoCr1Rxk5apWqT0'))
-    except:
-        # If any error occurs
-        print("Network exception occurred")
-        response = 'error encountered in restapis.py'
-    return response
+    # return json_payload
+    response = requests.post(url, json=json_payload, auth=HTTPBasicAuth('apikey', 'uxIts40B9NC9zz_J10ZOTtOpUJOcCXoCr1Rxk5apWqT0'))
+    # except:
+    #     # If any error occurs
+    #     print("Network exception occurred")
     status_code = response.status_code
     print(f"With status {status_code}")
-    json_data = json.loads(response.text)
-    return json_data
+    return response
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
 def get_dealers_from_cf(param=""):
@@ -113,7 +112,7 @@ def dealership_add_review(request, dealer_id):
     car_model = car.name
     car_year = car.year
     purchase = request.POST["purchasecheck"]
-    purchase_date = request.POST["purchasedate"]
+    purchase_date = json.dumps(request.POST["purchasedate"])
     dealer_review_obj = {
         'id':id, 
         'name':name, 
@@ -123,11 +122,12 @@ def dealership_add_review(request, dealer_id):
         'car_model':car_model, 
         'car_year':car_year, 
         'purchase':purchase, 
-        'purchase_date':purchase_date}
-    json_payload = json.loads(list(dealer_review_obj))
-    url = "https://olivernadela-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
-    # response = post_request(url, json_payload)
-    return dealer_review_obj
+        'purchase_date': purchase_date}
+    json_payload = dealer_review_obj
+    url = "https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
+           
+    response = post_request(url, json_payload)
+    return response
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 def analyze_review_sentiments(text):

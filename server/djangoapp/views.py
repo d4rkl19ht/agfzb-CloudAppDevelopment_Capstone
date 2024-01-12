@@ -136,7 +136,6 @@ def add_review(request, dealer_id):
         context['dealership_obj'] = dealership_obj[0]
         context['cars'] = CarModel.objects.all()
         return render(request, 'djangoapp/add_review.html', context) 
-        return HttpResponse('hello get')
     elif request.method == 'POST':
         resp = dealership_add_review(request, dealer_id)
         return HttpResponse(resp)
