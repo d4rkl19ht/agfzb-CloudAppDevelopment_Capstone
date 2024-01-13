@@ -11,7 +11,14 @@
 {%endblock%}
 {%block content%}
 <div class="container mt-2">
-    <h3>Reviews for {{dealership_obj.full_name}}</h3>
+    {% if reviews|length > 0 %}
+        <h3>Reviews for {{dealership_obj.full_name}}</h3>
+    {% else %}
+        {%with dealer_id=dealership_obj.id%}
+        <h3 class="text-center">No reviews yet for {{dealership_obj.full_name}}</h3>
+        <h5 class="text-center">Start one by clicking <a href="{% url 'djangoapp:add_review' dealer_id %}"><em>here!</em></a></h5>
+        {%endwith%}
+    {% endif%}
     <div class="card-columns">
         {%for review in reviews%}
             <div class="card">

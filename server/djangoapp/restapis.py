@@ -27,7 +27,7 @@ def get_request(url, **kwargs):
 
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
-def post_request(url, json_payload):
+def post_request(url, json_payload, headers={'Content-Type': 'application/json'}):
     
     # try:
         # Call get method of requests library with URL and parameters
@@ -43,7 +43,7 @@ def post_request(url, json_payload):
 # Create a get_dealers_from_cf method to get dealers from a cloud function
 def get_dealers_from_cf(param=""):
     results = []
-    url = "https://olivernadela-3000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai"
+    url = "https://olivernadela-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai"
     url = f"{url}/dealerships/get"
     if param:
         url = f"{url}/{param}"
@@ -53,8 +53,9 @@ def get_dealers_from_cf(param=""):
     if json_result:
         # Get the row list in JSON as dealers
         dealers = json_result
+        sorted_dealers = sorted(dealers, key=lambda x : x['id'])
         # For each dealer object
-        for dealer in dealers:
+        for dealer in sorted_dealers:
             # Get its content in `doc` object
             dealer_doc = dealer
             # Create a CarDealer object with values in `doc` object
@@ -86,7 +87,7 @@ def filter_keys(pair):
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 def get_dealer_reviews_from_cf(id):
     results = []
-    url = "https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai"
+    url = "https://olivernadela-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai"
     json_result = get_request(f"{url}/api/get_reviews?id={id}")
     if json_result:
         # Get the row list in JSON as reviews
@@ -124,7 +125,7 @@ def dealership_add_review(request, dealer_id):
         'purchase':purchase, 
         'purchase_date': purchase_date}
     json_payload = dealer_review_obj
-    url = "https://olivernadela-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
+    url = "https://olivernadela-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
            
     response = post_request(url, json_payload)
     return response
@@ -136,7 +137,7 @@ def analyze_review_sentiments(text):
     authenticator = IAMAuthenticator(api_key)
     natural_language_understanding = NaturalLanguageUnderstandingV1(version='2021-08-01',authenticator=authenticator)
     natural_language_understanding.set_service_url(url)
-    response = natural_language_understanding.analyze( text=text+"hello hello hello",features=Features(sentiment=SentimentOptions(targets=[text+"hello hello hello"]))).get_result()
+    response = natural_language_understanding.analyze( text=text+" hello hello hello",features=Features(sentiment=SentimentOptions(targets=[text+" hello hello hello"])), language='en').get_result()
     label=json.dumps(response, indent=2)
     label = response['sentiment']['document']['label']
 

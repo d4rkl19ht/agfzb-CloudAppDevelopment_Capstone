@@ -138,7 +138,11 @@ def add_review(request, dealer_id):
         return render(request, 'djangoapp/add_review.html', context) 
     elif request.method == 'POST':
         resp = dealership_add_review(request, dealer_id)
-        return HttpResponse(resp)
+        if resp.status_code == 201:
+            print(resp)
+            return redirect(f'djangoapp:dealer_details', dealer_id)
+        else:
+            return resp
     
 
     
